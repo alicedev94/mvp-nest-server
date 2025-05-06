@@ -48,8 +48,14 @@ export class AuthService {
       isActive: user[0].isActive,
     };
 
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    try {
+      return {
+        access_token: await this.jwtService.signAsync(payload)
+      }
+    } catch (error) {
+      console.log(error)
+      return error
+    }
+
   }
 }
