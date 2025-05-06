@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descargar PDF</title>
+</head>
+<body>
+    <button id="downloadBtn" type="button">Descargar PDF</button>
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', function () {
+            const text = 'tuTexto'; // Reemplaza con el texto deseado
+            const label = 'tuEtiqueta'; // Reemplaza con la etiqueta deseada
+            const url = `http://localhost:3000/generate-label-product/product/1234567890`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al descargar el PDF');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `Etiqueta-${label.toUpperCase()}-${text}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+</html>
